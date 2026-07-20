@@ -18,5 +18,4 @@
 
 ## 폴더 구조
 - `frontend/`, `backend/` — 추후 애플리케이션 코드 합류 예정
-- `infra/k8s/` — EKS 클러스터용 Kubernetes manifest
 - `docs/` — 아키텍처 문서, 운영 가이드 (추후 작성)
