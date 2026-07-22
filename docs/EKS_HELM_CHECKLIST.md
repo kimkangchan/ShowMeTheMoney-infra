@@ -1,6 +1,6 @@
 # EKS Helm 배포 전 팀원과 상의해야 하는 값
 
-`helm/backend`, `helm/frontend` chart를 만들면서 아직 확정 안 된 값들을 플레이스홀더로 남겨뒀다. EKS/RDS를 구축하는 팀원과 상의해서 아래 값들을 채운 뒤 진행한다.
+`helm/backend`, `helm/frontend` chart를 만들면서 아직 확정 안 된 값들을 플레이스홀더로 남겨뒀다. EKS/RDS를 구축 시 상의해서 아래 값들을 채운 뒤 진행한다.
 
 ## 1. AWS 계정 / 이미지
 
