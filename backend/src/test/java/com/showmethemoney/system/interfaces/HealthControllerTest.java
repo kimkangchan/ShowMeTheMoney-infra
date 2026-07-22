@@ -44,7 +44,7 @@ class HealthControllerTest {
                 .willThrow(new RuntimeException("DB connection failed"));
 
         mockMvc.perform(get("/api/health"))
-                .andExpect(status().isOk())
+                .andExpect(status().isServiceUnavailable())
                 .andExpect(jsonPath("$.data.status").value("DOWN"))
                 .andExpect(jsonPath("$.data.db").value("disconnected"));
     }
