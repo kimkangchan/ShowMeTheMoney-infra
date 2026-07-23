@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useTheme } from "next-themes";
 import DashboardLayout from "@/components/layout/DashboardLayout";
 import { formatCurrency, formatYearMonth, toYearMonth, formatDate } from "@/lib/format";
 import { DashboardSummary, CategoryExpense, Transaction } from "@/types";
@@ -14,9 +15,12 @@ import {
   ResponsiveContainer,
   Cell,
 } from "recharts";
-import { CATEGORY_COLORS } from "@/lib/constants";
+import { CATEGORY_COLORS, CATEGORY_COLORS_DARK } from "@/lib/constants";
 
 export default function DashboardPage() {
+  const { resolvedTheme } = useTheme();
+  const isDark = resolvedTheme === "dark";
+  const categoryColors = isDark ? CATEGORY_COLORS_DARK : CATEGORY_COLORS;
   const [yearMonth, setYearMonth] = useState(toYearMonth());
   const [summary, setSummary] = useState<DashboardSummary | null>(null);
   const [categoryExpenses, setCategoryExpenses] = useState<CategoryExpense[]>([]);
@@ -156,22 +160,24 @@ export default function DashboardPage() {
                     type="category"
                     dataKey="categoryName"
                     width={80}
-                    tick={{ fill: "#9CA3AF", fontSize: 12 }}
+                    tick={{ fill: isDark ? "#9c9c9c" : "#a3a3a3", fontSize: 12 }}
                   />
                   <Tooltip
                     formatter={(v) => formatCurrency(Number(v))}
                     contentStyle={{
-                      background: "#1F2937",
-                      border: "none",
+                      background: "var(--color-canvas)",
+                      border: "1px solid var(--color-hairline)",
                       borderRadius: 8,
-                      color: "#fff",
+                      boxShadow: "none",
                     }}
+                    labelStyle={{ color: "var(--color-foreground)" }}
+                    itemStyle={{ color: "var(--color-foreground)" }}
                   />
-                  <Bar dataKey="amount" radius={[0, 4, 4, 0]}>
+                  <Bar dataKey="amount" name="금액" radius={[0, 4, 4, 0]}>
                     {categoryExpenses.map((entry) => (
                       <Cell
                         key={entry.categoryCode}
-                        fill={CATEGORY_COLORS[entry.categoryCode] ?? "#6B7280"}
+                        fill={categoryColors[entry.categoryCode] ?? (isDark ? "#9c9c9c" : "#a3a3a3")}
                       />
                     ))}
                   </Bar>
