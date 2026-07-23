@@ -24,7 +24,7 @@ export default function Sidebar() {
   }
 
   return (
-    <aside className="w-56 min-h-screen bg-gray-900 dark:bg-gray-950 flex flex-col text-white border-r border-gray-200 dark:border-white/5">
+    <aside className="w-56 min-h-screen bg-gray-900 flex flex-col text-white border-r border-white/10">
       <div className="px-6 py-5 border-b border-white/10">
         <span className="font-bold text-base tracking-tight">MoneyFlowOps</span>
       </div>
@@ -38,7 +38,7 @@ export default function Sidebar() {
               href={item.href}
               className={`flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition-colors ${
                 active
-                  ? "bg-blue-600 text-white"
+                  ? "bg-accent text-white"
                   : "text-gray-400 hover:bg-white/10 hover:text-white"
               }`}
             >

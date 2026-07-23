@@ -46,12 +46,12 @@ export default function DashboardPage() {
 
   return (
     <DashboardLayout>
-      <div className="p-6 text-gray-900 dark:text-white">
+      <div className="p-6 text-foreground">
         {/* 헤더 */}
         <div className="flex items-center justify-between mb-6">
           <div>
             <h1 className="text-xl font-bold">이번 달 현금 흐름</h1>
-            <p className="text-sm text-gray-400 mt-0.5">
+            <p className="text-sm text-muted mt-0.5">
               {formatYearMonth(yearMonth)} 기준
             </p>
           </div>
@@ -64,7 +64,7 @@ export default function DashboardPage() {
                 );
                 setYearMonth(toYearMonth(d));
               }}
-              className="px-3 py-1.5 bg-gray-200 dark:bg-gray-800 hover:bg-gray-300 dark:hover:bg-gray-700 rounded-lg text-sm text-gray-800 dark:text-white"
+              className="btn-pill btn-pill-outline"
             >
               이전 달
             </button>
@@ -76,7 +76,7 @@ export default function DashboardPage() {
                 );
                 setYearMonth(toYearMonth(d));
               }}
-              className="px-3 py-1.5 bg-gray-200 dark:bg-gray-800 hover:bg-gray-300 dark:hover:bg-gray-700 rounded-lg text-sm text-gray-800 dark:text-white"
+              className="btn-pill btn-pill-outline"
             >
               다음 달
             </button>
@@ -88,7 +88,7 @@ export default function DashboardPage() {
           <MetricCard
             label="총 잔액"
             value={formatCurrency(summary?.balance ?? 0)}
-            color="text-gray-900 dark:text-white"
+            color="text-foreground"
           />
           <MetricCard
             label="총 수입"
@@ -107,7 +107,7 @@ export default function DashboardPage() {
           <MetricCard
             label="월 예산"
             value={summary?.budgetAmount ? formatCurrency(summary.budgetAmount) : "미설정"}
-            color="text-blue-400"
+            color="text-accent"
             badge={
               summary?.isOverBudget
                 ? "초과"
@@ -118,25 +118,25 @@ export default function DashboardPage() {
             badgeColor={
               summary?.isOverBudget
                 ? "bg-red-500/20 text-red-400"
-                : "bg-blue-500/20 text-blue-400"
+                : "bg-accent/15 text-accent"
             }
           />
         </div>
 
         {/* 예산 진행바 */}
         {budgetRate !== null && (
-          <div className="mb-6 bg-white dark:bg-gray-800 rounded-xl p-4">
+          <div className="mb-6 card p-4">
             <div className="flex justify-between text-sm mb-2">
-              <span className="text-gray-500 dark:text-gray-400">예산 사용률</span>
-              <span className={summary?.isOverBudget ? "text-red-400" : "text-blue-400"}>
+              <span className="text-muted">예산 사용률</span>
+              <span className={summary?.isOverBudget ? "text-red-400" : "text-accent"}>
                 {budgetRate.toFixed(1)}%
                 {summary?.isOverBudget && " ⚠️ 예산 초과"}
               </span>
             </div>
-            <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+            <div className="w-full bg-hairline rounded-full h-2">
               <div
                 className={`h-2 rounded-full transition-all ${
-                  summary?.isOverBudget ? "bg-red-500" : "bg-blue-500"
+                  summary?.isOverBudget ? "bg-red-500" : "bg-accent"
                 }`}
                 style={{ width: `${Math.min(budgetRate, 100)}%` }}
               />
@@ -146,7 +146,7 @@ export default function DashboardPage() {
 
         <div className="grid grid-cols-3 gap-4">
           {/* 카테고리 차트 */}
-          <div className="col-span-2 bg-white dark:bg-gray-800 rounded-xl p-4">
+          <div className="col-span-2 card p-4">
             <h2 className="text-sm font-semibold mb-4">카테고리별 지출</h2>
             {categoryExpenses.length > 0 ? (
               <ResponsiveContainer width="100%" height={200}>
@@ -178,22 +178,22 @@ export default function DashboardPage() {
                 </BarChart>
               </ResponsiveContainer>
             ) : (
-              <p className="text-gray-500 text-sm text-center py-12">
+              <p className="text-muted text-sm text-center py-12">
                 지출 내역이 없습니다.
               </p>
             )}
           </div>
 
           {/* 최근 거래 */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl p-4">
+          <div className="card p-4">
             <h2 className="text-sm font-semibold mb-4">최근 거래</h2>
             <div className="flex flex-col gap-3">
               {recentTransactions.length > 0 ? (
                 recentTransactions.map((tx) => (
                   <div key={tx.id} className="flex justify-between items-center">
                     <div>
-                      <p className="text-xs text-gray-600 dark:text-gray-300">{tx.categoryName}</p>
-                      <p className="text-xs text-gray-400 dark:text-gray-500">{formatDate(tx.transactionAt)} · {tx.memo ?? "-"}</p>
+                      <p className="text-xs text-muted-secondary">{tx.categoryName}</p>
+                      <p className="text-xs text-muted">{formatDate(tx.transactionAt)} · {tx.memo ?? "-"}</p>
                     </div>
                     <span
                       className={`text-sm font-medium ${
@@ -206,7 +206,7 @@ export default function DashboardPage() {
                   </div>
                 ))
               ) : (
-                <p className="text-gray-500 text-sm">거래 내역이 없습니다.</p>
+                <p className="text-muted text-sm">거래 내역이 없습니다.</p>
               )}
             </div>
           </div>
@@ -230,9 +230,9 @@ function MetricCard({
   badgeColor?: string;
 }) {
   return (
-    <div className="bg-white dark:bg-gray-800 rounded-xl p-4">
+    <div className="card p-4">
       <div className="flex items-center justify-between mb-2">
-        <span className="text-xs text-gray-400">{label}</span>
+        <span className="text-xs text-muted">{label}</span>
         {badge && (
           <span className={`text-xs px-2 py-0.5 rounded-full ${badgeColor}`}>
             {badge}
