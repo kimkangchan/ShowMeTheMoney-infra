@@ -3,8 +3,9 @@
 import { useEffect, useState } from "react";
 import { useTheme } from "next-themes";
 import DashboardLayout from "@/components/layout/DashboardLayout";
+import DailyBalanceChart from "@/components/dashboard/DailyBalanceChart";
 import { formatCurrency, formatYearMonth, toYearMonth, formatDate } from "@/lib/format";
-import { DashboardSummary, CategoryExpense, Transaction } from "@/types";
+import { DashboardSummary, CategoryExpense, Transaction, DashboardDaily } from "@/types";
 import api from "@/lib/api";
 import {
   BarChart,
@@ -25,6 +26,7 @@ export default function DashboardPage() {
   const [summary, setSummary] = useState<DashboardSummary | null>(null);
   const [categoryExpenses, setCategoryExpenses] = useState<CategoryExpense[]>([]);
   const [recentTransactions, setRecentTransactions] = useState<Transaction[]>([]);
+  const [dailyBalances, setDailyBalances] = useState<DashboardDaily | null>(null);
 
   const yearMonthStr = String(yearMonth);
 
@@ -37,6 +39,11 @@ export default function DashboardPage() {
     api
       .get<{ data: CategoryExpense[] }>(`/api/dashboard/categories?yearMonth=${yearMonthStr}&type=0`)
       .then((res) => setCategoryExpenses(res.data.data))
+      .catch(() => {});
+
+    api
+      .get<{ data: DashboardDaily }>(`/api/dashboard/daily?yearMonth=${yearMonthStr}`)
+      .then((res) => setDailyBalances(res.data.data))
       .catch(() => {});
 
     const period = `${yearMonthStr.slice(0, 4)}-${yearMonthStr.slice(4)}`;
@@ -145,6 +152,14 @@ export default function DashboardPage() {
                 style={{ width: `${Math.min(budgetRate, 100)}%` }}
               />
             </div>
+          </div>
+        )}
+
+        {/* 일별 누적 지출 추이 */}
+        {dailyBalances && dailyBalances.days.length > 0 && (
+          <div className="mb-6 card p-4">
+            <h2 className="text-sm font-semibold mb-4">일별 누적 지출</h2>
+            <DailyBalanceChart daily={dailyBalances} />
           </div>
         )}
 
